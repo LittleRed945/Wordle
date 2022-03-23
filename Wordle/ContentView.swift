@@ -9,9 +9,22 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var isplaying=false
-    @State private var topic_len=[Substring]()
+    @State private var show_instruction=false
+    @State private var topic_len=[Int]()
+    @State private var topics = [Substring]()
+    @State private var topic=""
     var body:some View{
-        main_interface_view(isplaying: $isplaying)
+        if isplaying == false {
+            main_interface_view(isplaying: $isplaying, show_instruction: $show_instruction,  topic_len: $topic_len, topics:topics)
+                .onAppear{
+                    let content = readFile()
+                    topics = content.split(separator: "\n")
+                        topic=String(topics.randomElement()!)
+                }
+        }else{
+            playing_view(isplaying: $isplaying)
+        }
+        
     }
     
 }
